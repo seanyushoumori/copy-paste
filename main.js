@@ -17,7 +17,7 @@
 (function () {
   const api = window.SubwayBuilderAPI;
   const TAG = "[Copy Paste]";
-  const MOD_VERSION = "1.0.0";
+  const MOD_VERSION = "1.0.1";
   if (!api) { console.error(`${TAG} SubwayBuilderAPI not found`); return; }
 
   const SRC = "netclip";
@@ -239,6 +239,15 @@
       paste([e.lngLat.lng, e.lngLat.lat]);
       setMode("idle");
     });
+    // Right-click cancels paste/select mode without committing (drops the ghost).
+    map.on("contextmenu", (e) => {
+      if (mode === "idle") return;
+      e.preventDefault?.();
+      e.originalEvent?.preventDefault?.();
+      e.originalEvent?.stopPropagation?.();
+      dragging = false; boxStart = boxNow = null;
+      setMode("idle");
+    });
     map.on("styledata", () => { ensureLayers(); render(); }); // game drops layers constantly
   }
 
@@ -256,6 +265,8 @@
   function onKey(e) {
     const t = e.target;
     if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return; // don't hijack typing
+    // Escape cancels paste/select mode (drops the ghost) without committing.
+    if (e.key === "Escape" && mode !== "idle") { e.preventDefault(); dragging = false; boxStart = boxNow = null; setMode("idle"); return; }
     if (!(e.metaKey || e.ctrlKey)) return;
     const k = e.key?.toLowerCase();
     if (k === "c" && selection.trackIds.size) { e.preventDefault(); copy(); }

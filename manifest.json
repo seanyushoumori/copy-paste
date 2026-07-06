@@ -2,7 +2,7 @@
   "id": "copy-paste",
   "name": "Copy Paste",
   "description": "Copy and paste pieces of your network. Drag a box to select a stretch of track, copy it, then paste a translated copy anywhere on the map — track, parallel/quad groups, stations, and crossover-ready geometry all come along. Pasted pieces drop as blueprints so you can review and build them with the game's own Build button. A fast way to duplicate stations, junctions, or whole line segments instead of redrawing them by hand.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "abadsinger"
   },
